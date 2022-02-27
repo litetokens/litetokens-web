@@ -1,6 +1,6 @@
 {
     "name": "litetokensweb",
-    "version": "2.1.14",
+    "version": "2.1.14.a",
     "description": "JavaScript SDK that encapsulates the LITETOKENS Node HTTP API",
     "main": "dist/LitetokensWeb.node.js",
     "scripts": {
