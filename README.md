@@ -146,7 +146,7 @@ const litetokensWeb = new LitetokensWeb(
 
 async function getBalance() {
 
-    const address = 'TPL66VK2gCXNCD7EJg9pgJRfqcRazjhUZY';
+    const address = 'LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1';
 
     // The majority of the function calls are asynchronus,
     // meaning that they cannot return the result instantly.
