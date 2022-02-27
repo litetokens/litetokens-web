@@ -7,7 +7,7 @@ for (let i = 0; i < ALPHABET.length; i++)
 const BASE = 58;
 
 export function encode58(buffer) {
-    if (buffer.length === 0) 
+    if (buffer.length === 0)
         return '';
 
     let i;
@@ -16,7 +16,7 @@ export function encode58(buffer) {
     const digits = [0];
 
     for (i = 0; i < buffer.length; i++) {
-        for (j = 0; j < digits.length; j++) 
+        for (j = 0; j < digits.length; j++)
             digits[j] <<= 8;
 
         digits[0] += buffer[i];
@@ -34,14 +34,14 @@ export function encode58(buffer) {
         }
     }
 
-    for (i = 0; buffer[i] === 0 && i < buffer.length - 1; i++) 
+    for (i = 0; buffer[i] === 0 && i < buffer.length - 1; i++)
         digits.push(0);
 
     return digits.reverse().map(digit => ALPHABET[digit]).join('');
 }
 
 export function decode58(string) {
-    if (string.length === 0) 
+    if (string.length === 0)
         return [];
 
     let i;
@@ -55,7 +55,7 @@ export function decode58(string) {
         if (!(c in ALPHABET_MAP))
             throw new Error('Non-base58 character');
 
-        for (j = 0; j < bytes.length; j++) 
+        for (j = 0; j < bytes.length; j++)
             bytes[j] *= BASE;
 
         bytes[0] += ALPHABET_MAP[c];

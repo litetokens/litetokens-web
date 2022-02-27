@@ -65,9 +65,9 @@ const app = async () => {
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    litetokensWeb.xlt.getTransactionsRelated('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 'all').then(transactions => {
+    litetokensWeb.xlt.getTransactionsRelated('LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1', 'all').then(transactions => {
         console.group('Transactions relating to address');
-            console.log('- Address: TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1');
+            console.log('- Address: LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1');
             console.log('- Transactions:\n' + JSON.stringify(transactions, null, 2), '\n');
         console.groupEnd();
     }).catch(err => console.error(err));
@@ -79,14 +79,14 @@ const app = async () => {
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    litetokensWeb.xlt.getBalance('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1').then(balance => {
+    litetokensWeb.xlt.getBalance('LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1').then(balance => {
         console.group('Account balance');
-            console.log('- Address: TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1');
+            console.log('- Address: LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1');
             console.log('- Balance:', balance, '\n');
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    litetokensWeb.xlt.getBandwidth('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1').then(bandwidth => {
+    litetokensWeb.xlt.getBandwidth('LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1').then(bandwidth => {
         console.group('Account bandwidth');
             console.log('- Address: 4144abc6018aec80cf05e3ac94376d6cd76da1b112');
             console.log('- Bandwidth:', bandwidth, '\n');
@@ -163,18 +163,18 @@ const app = async () => {
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    const sendTransaction = await litetokensWeb.transactionBuilder.sendXlt('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10);
+    const sendTransaction = await litetokensWeb.transactionBuilder.sendXlt('LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1', 10);
 
     console.group('Unsigned send XLT transaction');
-        console.log('- Recipient: TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1');
+        console.log('- Recipient: LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1');
         console.log('- Transaction:\n' + JSON.stringify(sendTransaction, null, 2), '\n');
     console.groupEnd();
 
     // There are no tokens on the network yet
-    // const sendToken = await litetokensWeb.transactionBuilder.sendToken('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10, 'TestToken_1');
+    // const sendToken = await litetokensWeb.transactionBuilder.sendToken('LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1', 10, 'TestToken_1');
     //
     // console.group('Unsigned send token transaction');
-    //     console.log('- Recipient: TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1');
+    //     console.log('- Recipient: LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1');
     //     console.log('- Token: TestToken_1');
     //     console.log('- Transaction:\n' + JSON.stringify(sendToken, null, 2), '\n');
     // console.groupEnd();
@@ -317,7 +317,7 @@ const app = async () => {
         });
     });
 
-    litetokensWeb.xlt.sendTransaction('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10, (err, result) => {
+    litetokensWeb.xlt.sendTransaction('LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1', 10, (err, result) => {
         if(err)
             return console.error(err);
 
@@ -326,7 +326,7 @@ const app = async () => {
         console.groupEnd();
     });
 
-    litetokensWeb.xlt.sendToken('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10, 'TestToken_1', (err, result) => {
+    litetokensWeb.xlt.sendToken('LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1', 10, 'TestToken_1', (err, result) => {
         if(err)
             return console.error(err);
 
