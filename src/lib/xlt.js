@@ -2,10 +2,10 @@ import LitetokensWeb from 'index';
 import utils from 'utils';
 import * as Ethers from 'ethers';
 
-const TRX_MESSAGE_HEADER = '\x19TRON Signed Message:\n32';
+const XLT_MESSAGE_HEADER = '\x19LITETOKENS Signed Message:\n32';
 const ETH_MESSAGE_HEADER = '\x19Ethereum Signed Message:\n32';
 
-export default class Trx {
+export default class Xlt {
     constructor(litetokensWeb = false) {
         if(!litetokensWeb || !litetokensWeb instanceof LitetokensWeb)
             throw new Error('Expected instance of LitetokensWeb');
@@ -520,20 +520,20 @@ export default class Trx {
         }).catch(err => callback(err));
     }
 
-    async verifyMessage(message = false, signature = false, address = this.litetokensWeb.defaultAddress.base58, useTronHeader = true, callback = false) {
+    async verifyMessage(message = false, signature = false, address = this.litetokensWeb.defaultAddress.base58, useLitetokensHeader = true, callback = false) {
         if(utils.isFunction(address)) {
             callback = address;
             address = this.litetokensWeb.defaultAddress.base58;
-            useTronHeader = true;
+            useLitetokensHeader = true;
         }
 
-        if(utils.isFunction(useTronHeader)) {
-            callback = useTronHeader;
-            useTronHeader = true;
+        if(utils.isFunction(useLitetokensHeader)) {
+            callback = useLitetokensHeader;
+            useLitetokensHeader = true;
         }
 
         if(!callback)
-            return this.injectPromise(this.verifyMessage, message, signature, address, useTronHeader);
+            return this.injectPromise(this.verifyMessage, message, signature, address, useLitetokensHeader);
 
         if(!utils.isHex(message))
             return callback('Expected hex message input');
@@ -545,7 +545,7 @@ export default class Trx {
             signature = signature.substr(2);
 
         const messageBytes = [
-            ...Ethers.utils.toUtf8Bytes(useTronHeader ? TRX_MESSAGE_HEADER : ETH_MESSAGE_HEADER),
+            ...Ethers.utils.toUtf8Bytes(useLitetokensHeader ? XLT_MESSAGE_HEADER : ETH_MESSAGE_HEADER),
             ...utils.code.hexStr2byteArray(message)
         ];
 
@@ -556,8 +556,8 @@ export default class Trx {
             s: '0x' + signature.substring(64, 128)
         });
 
-        const tronAddress = '41' + recovered.substr(2);
-        const base58Address = this.litetokensWeb.address.fromHex(tronAddress);
+        const litetokensAddress = '41' + recovered.substr(2);
+        const base58Address = this.litetokensWeb.address.fromHex(litetokensAddress);
 
         if(base58Address == this.litetokensWeb.address.fromHex(address))
             return callback(null, true);
@@ -565,20 +565,20 @@ export default class Trx {
         callback('Signature does not match');
     }
 
-    async sign(transaction = false, privateKey = this.litetokensWeb.defaultPrivateKey, useTronHeader = true, callback = false) {
+    async sign(transaction = false, privateKey = this.litetokensWeb.defaultPrivateKey, useLitetokensHeader = true, callback = false) {
         if(utils.isFunction(privateKey)) {
             callback = privateKey;
             privateKey = this.litetokensWeb.defaultPrivateKey;
-            useTronHeader = true;
+            useLitetokensHeader = true;
         }
 
-        if(utils.isFunction(useTronHeader)) {
-            callback = useTronHeader;
-            useTronHeader = true;
+        if(utils.isFunction(useLitetokensHeader)) {
+            callback = useLitetokensHeader;
+            useLitetokensHeader = true;
         }
 
         if(!callback)
-            return this.injectPromise(this.sign, transaction, privateKey, useTronHeader);
+            return this.injectPromise(this.sign, transaction, privateKey, useLitetokensHeader);
 
         // Message signing
         if(utils.isString(transaction)) {
@@ -591,7 +591,7 @@ export default class Trx {
             try {
                 const signingKey = new Ethers.utils.SigningKey(privateKey);
                 const messageBytes = [
-                    ...Ethers.utils.toUtf8Bytes(useTronHeader ? TRX_MESSAGE_HEADER : ETH_MESSAGE_HEADER),
+                    ...Ethers.utils.toUtf8Bytes(useLitetokensHeader ? XLT_MESSAGE_HEADER : ETH_MESSAGE_HEADER),
                     ...utils.code.hexStr2byteArray(transaction)
                 ];
 
@@ -692,7 +692,7 @@ export default class Trx {
 
         try {
             const address = options.privateKey ? this.litetokensWeb.address.fromPrivateKey(options.privateKey) : options.address;
-            const transaction = await this.litetokensWeb.transactionBuilder.sendTrx(to, amount, address);
+            const transaction = await this.litetokensWeb.transactionBuilder.sendXlt(to, amount, address);
             const signedTransaction = await this.sign(transaction, options.privateKey || undefined);
             const result = await this.sendRawTransaction(signedTransaction);
 
@@ -745,11 +745,11 @@ export default class Trx {
     }
 
 /**
-     * Freezes an amount of TRX.
-     * Will give bandwidth OR Energy and TRON Power(voting rights)
+     * Freezes an amount of XLT.
+     * Will give bandwidth OR Energy and LITETOKENS Power(voting rights)
      * to the owner of the frozen tokens.
      *
-     * @param amount - is the number of frozen trx
+     * @param amount - is the number of frozen xlt
      * @param duration - is the duration in days to be frozen
      * @param resource - is the type, must be either "ENERGY" or "BANDWIDTH"
      * @param options
@@ -809,8 +809,8 @@ export default class Trx {
     }
 
     /**
-     * Unfreeze TRX that has passed the minimum freeze duration.
-     * Unfreezing will remove bandwidth and TRON Power.
+     * Unfreeze XLT that has passed the minimum freeze duration.
+     * Unfreezing will remove bandwidth and LITETOKENS Power.
      *
      * @param resource - is the type, must be either "ENERGY" or "BANDWIDTH"
      * @param options
@@ -919,7 +919,7 @@ export default class Trx {
         return this.sendTransaction(...args);
     }
 
-    sendTrx(...args) {
+    sendXlt(...args) {
         return this.sendTransaction(...args);
     }
 

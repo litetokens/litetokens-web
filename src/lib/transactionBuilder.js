@@ -11,14 +11,14 @@ export default class TransactionBuilder {
         this.injectPromise = utils.promiseInjector(this);
     }
 
-    sendTrx(to = false, amount = 0, from = this.litetokensWeb.defaultAddress.hex, callback = false) {
+    sendXlt(to = false, amount = 0, from = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(from)) {
             callback = from;
             from = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
-            return this.injectPromise(this.sendTrx, to, amount, from);
+            return this.injectPromise(this.sendXlt, to, amount, from);
 
         if(!this.litetokensWeb.isAddress(to))
             return callback('Invalid recipient address provided');
@@ -33,7 +33,7 @@ export default class TransactionBuilder {
         from = this.litetokensWeb.address.toHex(from);
 
         if(to === from)
-            return callback('Cannot transfer TRX to the same account');
+            return callback('Cannot transfer XLT to the same account');
 
         this.litetokensWeb.fullNode.request('wallet/createtransaction', {
             to_address: to,
@@ -541,8 +541,8 @@ export default class TransactionBuilder {
             description = false,
             url = false,
             totalSupply = 0,
-            trxRatio = 1, // How much TRX will `tokenRatio` cost?
-            tokenRatio = 1, // How many tokens will `trxRatio` afford?
+            xltRatio = 1, // How much XLT will `tokenRatio` cost?
+            tokenRatio = 1, // How many tokens will `xltRatio` afford?
             saleStart = Date.now(),
             saleEnd = false,
             freeBandwidth = 0, // The creator's "donated" bandwidth for use by token holders
@@ -560,8 +560,8 @@ export default class TransactionBuilder {
         if(!utils.isInteger(totalSupply) || totalSupply <= 0)
             return callback('Invalid supply amount provided');
 
-        if(!utils.isInteger(trxRatio) || trxRatio <= 0)
-            return callback('TRX ratio must be a positive integer');
+        if(!utils.isInteger(xltRatio) || xltRatio <= 0)
+            return callback('XLT ratio must be a positive integer');
 
         if(!utils.isInteger(tokenRatio) || tokenRatio <= 0)
             return callback('Token ratio must be a positive integer');
@@ -600,7 +600,7 @@ export default class TransactionBuilder {
             description: this.litetokensWeb.fromUtf8(description),
             url: this.litetokensWeb.fromUtf8(url),
             total_supply: parseInt(totalSupply),
-            trx_num: parseInt(trxRatio),
+            xlt_num: parseInt(xltRatio),
             num: parseInt(tokenRatio),
             start_time: parseInt(saleStart),
             end_time: parseInt(saleEnd),
@@ -838,18 +838,18 @@ export default class TransactionBuilder {
     }
 
     /**
-     * Create an exchange between a token and TRX.
+     * Create an exchange between a token and XLT.
      * Token Name should be a CASE SENSITIVE string.
-     * PLEASE VERIFY THIS ON TRONSCAN.
+     * PLEASE VERIFY THIS ON LITETOKENSSCAN.
      */
-    createTRXExchange(tokenName, tokenBalance, trxBalance, ownerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
+    createXLTExchange(tokenName, tokenBalance, xltBalance, ownerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(ownerAddress)) {
             callback = ownerAddress;
             ownerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if (!callback)
-            return this.injectPromise(this.createTRXExchange, tokenName, tokenBalance, trxBalance, ownerAddress);
+            return this.injectPromise(this.createXLTExchange, tokenName, tokenBalance, xltBalance, ownerAddress);
 
         if (!this.litetokensWeb.isAddress(ownerAddress))
             return callback('Invalid address provided');
@@ -858,15 +858,15 @@ export default class TransactionBuilder {
             return callback('Invalid tokenName provided');
 
         if (!utils.isInteger(tokenBalance) || tokenBalance <= 0
-            || !utils.isInteger(trxBalance) || trxBalance <= 0)
+            || !utils.isInteger(xltBalance) || xltBalance <= 0)
             return callback('Invalid amount provided');
 
         this.litetokensWeb.fullNode.request('wallet/exchangecreate', {
             owner_address: this.litetokensWeb.address.toHex(ownerAddress),
             first_token_id: this.litetokensWeb.fromUtf8(tokenName),
             first_token_balance: tokenBalance,
-            second_token_id: '5f', // Constant for TRX.
-            second_token_balance: trxBalance
+            second_token_id: '5f', // Constant for XLT.
+            second_token_balance: xltBalance
         }, 'post').then(resources => {
             callback(null, resources);
         }).catch(err => callback(err));
@@ -874,9 +874,9 @@ export default class TransactionBuilder {
 
     /**
      * Create an exchange between a token and another token.
-     * DO NOT USE THIS FOR TRX.
+     * DO NOT USE THIS FOR XLT.
      * Token Names should be a CASE SENSITIVE string.
-     * PLEASE VERIFY THIS ON TRONSCAN.
+     * PLEASE VERIFY THIS ON LITETOKENSSCAN.
      */
     createTokenExchange(firstTokenName, firstTokenBalance, secondTokenName, secondTokenBalance, ownerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(ownerAddress)) {
@@ -885,7 +885,7 @@ export default class TransactionBuilder {
         }
 
         if (!callback)
-            return this.injectPromise(this.createTRXExchange, firstTokenName, firstTokenBalance, secondTokenName, secondTokenBalance, ownerAddress);
+            return this.injectPromise(this.createXLTExchange, firstTokenName, firstTokenBalance, secondTokenName, secondTokenBalance, ownerAddress);
 
         if (!this.litetokensWeb.isAddress(ownerAddress))
             return callback('Invalid address provided');
@@ -914,7 +914,7 @@ export default class TransactionBuilder {
     /**
      * Adds tokens into a bancor style exchange.
      * Will add both tokens at market rate.
-     * Use "_" for the constant value for TRX.
+     * Use "_" for the constant value for XLT.
      */
     injectExchangeTokens(exchangeID = false, tokenName = false, tokenAmount = 0, ownerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(ownerAddress)) {
@@ -959,7 +959,7 @@ export default class TransactionBuilder {
     /**
      * Withdraws tokens from a bancor style exchange.
      * Will withdraw at market rate both tokens.
-     * Use "_" for the constant value for TRX.
+     * Use "_" for the constant value for XLT.
      */
     withdrawExchangeTokens(exchangeID = false, tokenName = false, tokenAmount = 0, ownerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(ownerAddress)) {
@@ -1004,7 +1004,7 @@ export default class TransactionBuilder {
     /**
      * Trade tokens on a bancor style exchange.
      * Expected value is a validation and used to cap the total amt of token 2 spent.
-     * Use "_" for the constant value for TRX.
+     * Use "_" for the constant value for XLT.
      */
     tradeExchangeTokens(exchangeID = false,
         tokenName = false,

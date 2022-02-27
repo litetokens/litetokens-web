@@ -1,7 +1,7 @@
 {
     "name": "litetokensweb",
     "version": "2.1.14",
-    "description": "JavaScript SDK that encapsulates the TRON Node HTTP API",
+    "description": "JavaScript SDK that encapsulates the LITETOKENS Node HTTP API",
     "main": "dist/LitetokensWeb.node.js",
     "scripts": {
         "prepare": "npm run build",
@@ -74,11 +74,11 @@
     },
     "contributors": [
         {
-            "name": "TRON",
-            "url": "https://github.com/tronprotocol"
+            "name": "LITETOKENS",
+            "url": "https://github.com/litetokens"
         }
     ],
-    "homepage": "https://github.com/tronprotocol/tron-web",
+    "homepage": "https://github.com/litetokens/litetokens-web",
     "license": "MIT",
-    "repository": "https://github.com/tronprotocol/tron-web.git"
+    "repository": "https://github.com/litetokens/litetokens-web.git"
 }

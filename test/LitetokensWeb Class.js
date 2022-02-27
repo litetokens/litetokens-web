@@ -4,9 +4,9 @@ const LitetokensWeb = require('./setup/LitetokensWeb.js');
 const assert = chai.assert;
 const HttpProvider = LitetokensWeb.providers.HttpProvider;
 
-const FULL_NODE_API = 'https://api.shasta.trongrid.io';
-const SOLIDITY_NODE_API = 'https://api.shasta.trongrid.io';
-const EVENT_API = 'https://api.shasta.trongrid.io';
+const FULL_NODE_API = 'https://api.shasta.litescan.org';
+const SOLIDITY_NODE_API = 'https://api.shasta.litescan.org';
+const EVENT_API = 'https://api.shasta.litescan.org';
 const PRIVATE_KEY = 'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0';
 const ADDRESS_HEX = '41928c9af0651632157ef27a2cf17ca72c575a4d21';
 const ADDRESS_BASE58 = 'TPL66VK2gCXNCD7EJg9pgJRfqcRazjhUZY';

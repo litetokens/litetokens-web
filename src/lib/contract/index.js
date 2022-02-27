@@ -169,8 +169,8 @@ export default class Contract {
         try {
             const address = this.litetokensWeb.address.fromPrivateKey(privateKey);
             const transaction = await this.litetokensWeb.transactionBuilder.createSmartContract(options, address);
-            const signedTransaction = await this.litetokensWeb.trx.sign(transaction, privateKey);
-            const contract = await this.litetokensWeb.trx.sendRawTransaction(signedTransaction);
+            const signedTransaction = await this.litetokensWeb.xlt.sign(transaction, privateKey);
+            const contract = await this.litetokensWeb.xlt.sendRawTransaction(signedTransaction);
 
             if(!contract.result)
                 return callback('Unknown error: ' + JSON.stringify(contract, null, 2));
@@ -186,7 +186,7 @@ export default class Contract {
             return this.injectPromise(this.at, contractAddress);
 
         try {
-            const contract = await this.litetokensWeb.trx.getContract(contractAddress);
+            const contract = await this.litetokensWeb.xlt.getContract(contractAddress);
 
             if(!contract.contract_address)
                 callback('Unknown error: ' + JSON.stringify(contract, null, 2));

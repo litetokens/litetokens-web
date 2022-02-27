@@ -1,8 +1,8 @@
 const HttpProvider = LitetokensWeb.providers.HttpProvider;
 
-const fullNode = new HttpProvider('https://api.trongrid.io:8090');
-const solidityNode = new HttpProvider('https://api.trongrid.io:8091');
-const eventServer = 'https://api.trongrid.io/';
+const fullNode = new HttpProvider('https://api.litescan.org:8090');
+const solidityNode = new HttpProvider('https://api.litescan.org:8091');
+const eventServer = 'https://api.litescan.org/';
 const privateKey = 'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0';
 
 const app = async () => {
@@ -39,82 +39,82 @@ const app = async () => {
         console.groupEnd();
     console.groupEnd();
 
-    const currentBlock = await litetokensWeb.trx.getCurrentBlock();
+    const currentBlock = await litetokensWeb.xlt.getCurrentBlock();
 
     console.group('Current block');
         console.log(JSON.stringify(currentBlock, null, 2), '\n');
     console.groupEnd();
 
     // You can use latest, earliest, a block hash or block number
-    const previousBlock = await litetokensWeb.trx.getBlock('0');
+    const previousBlock = await litetokensWeb.xlt.getBlock('0');
 
     console.group('Previous block #52');
         console.log(JSON.stringify(previousBlock, null, 2), '\n');
     console.groupEnd();
 
-    const genesisBlockCount = await litetokensWeb.trx.getBlockTransactionCount('earliest');
+    const genesisBlockCount = await litetokensWeb.xlt.getBlockTransactionCount('earliest');
 
     console.group('Genesis Block Transaction Count');
         console.log('Transactions:', genesisBlockCount, '\n');
     console.groupEnd();
 
-    litetokensWeb.trx.getTransaction('2429559770c908e262d2510592cc0948f6bdec9288c528ef5ed6a22ea75148de').then(transaction => {
+    litetokensWeb.xlt.getTransaction('2429559770c908e262d2510592cc0948f6bdec9288c528ef5ed6a22ea75148de').then(transaction => {
         console.group('Transaction');
             console.log('- Hash:', transaction.txID);
             console.log('- Transaction:\n' + JSON.stringify(transaction, null, 2), '\n');
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    litetokensWeb.trx.getTransactionsRelated('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 'all').then(transactions => {
+    litetokensWeb.xlt.getTransactionsRelated('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 'all').then(transactions => {
         console.group('Transactions relating to address');
             console.log('- Address: TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1');
             console.log('- Transactions:\n' + JSON.stringify(transactions, null, 2), '\n');
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    litetokensWeb.trx.getAccount('4144abc6018aec80cf05e3ac94376d6cd76da1b112').then(accountInfo => {
+    litetokensWeb.xlt.getAccount('4144abc6018aec80cf05e3ac94376d6cd76da1b112').then(accountInfo => {
         console.group('Account information');
             console.log('- Address: 4144abc6018aec80cf05e3ac94376d6cd76da1b112');
             console.log('- Account:\n' + JSON.stringify(accountInfo, null, 2), '\n');
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    litetokensWeb.trx.getBalance('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1').then(balance => {
+    litetokensWeb.xlt.getBalance('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1').then(balance => {
         console.group('Account balance');
             console.log('- Address: TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1');
             console.log('- Balance:', balance, '\n');
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    litetokensWeb.trx.getBandwidth('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1').then(bandwidth => {
+    litetokensWeb.xlt.getBandwidth('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1').then(bandwidth => {
         console.group('Account bandwidth');
             console.log('- Address: 4144abc6018aec80cf05e3ac94376d6cd76da1b112');
             console.log('- Bandwidth:', bandwidth, '\n');
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    litetokensWeb.trx.getTokensIssuedByAddress('TSZRsyxQrTFrjpAoqsPJj1pS4pacBnsBx1').then(tokens => {
+    litetokensWeb.xlt.getTokensIssuedByAddress('TSZRsyxQrTFrjpAoqsPJj1pS4pacBnsBx1').then(tokens => {
         console.group('Tokens from address');
             console.log('- Owner Address: TSZRsyxQrTFrjpAoqsPJj1pS4pacBnsBx1');
             console.log('- Tokens:\n' + JSON.stringify(tokens, null, 2), '\n');
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    litetokensWeb.trx.getTokenFromID('TestToken').then(token => {
+    litetokensWeb.xlt.getTokenFromID('TestToken').then(token => {
         console.group('Tokens from its name');
             console.log('- Token Name: TestToken');
             console.log('- Token:\n' + JSON.stringify(token, null, 2), '\n');
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    const nodeList = await litetokensWeb.trx.listNodes();
+    const nodeList = await litetokensWeb.xlt.listNodes();
 
     console.group('List of full nodes');
         console.log('- Node Count:', nodeList.length);
         console.log('- Nodes:', JSON.stringify(nodeList), '\n');
     console.groupEnd();
 
-    const blockRange = await litetokensWeb.trx.getBlockRange(30, 35);
+    const blockRange = await litetokensWeb.xlt.getBlockRange(30, 35);
 
     console.group('Block IDs between 30 and 35');
         console.log('- Block Range: [ 30, 35 ]');
@@ -123,21 +123,21 @@ const app = async () => {
         }), '\n');
     console.groupEnd();
 
-    const superRepresentatives = await litetokensWeb.trx.listSuperRepresentatives();
+    const superRepresentatives = await litetokensWeb.xlt.listSuperRepresentatives();
 
     console.group('List of super representatives');
         console.log('- SR Count:', superRepresentatives.length);
         console.log('- SRs:', JSON.stringify(superRepresentatives, null, 2), '\n');
     console.groupEnd();
 
-    const fullTokenList = await litetokensWeb.trx.listTokens();
+    const fullTokenList = await litetokensWeb.xlt.listTokens();
 
     console.group('List of tokens');
         console.log('- Token Count:', fullTokenList.length);
         console.log('- Tokens:', JSON.stringify(fullTokenList, null, 2), '\n');
     console.groupEnd();
 
-    await litetokensWeb.trx.listTokens(2, (err, tokens) => {
+    await litetokensWeb.xlt.listTokens(2, (err, tokens) => {
         if(err)
             return console.error(err);
 
@@ -147,14 +147,14 @@ const app = async () => {
         console.groupEnd();
     });
 
-    const nextVoteCycle = await litetokensWeb.trx.timeUntilNextVoteCycle();
+    const nextVoteCycle = await litetokensWeb.xlt.timeUntilNextVoteCycle();
 
     console.group('Next vote cycle');
         console.log('- Time Remaining:', nextVoteCycle + 'ms');
         console.log('- Occurs At:', new Date(Date.now() + nextVoteCycle), '\n');
     console.groupEnd();
 
-    litetokensWeb.trx.getContract('TBjntEor6jTdDkAETyYMtbWqHnmpVBQ99Q').then(contract => {
+    litetokensWeb.xlt.getContract('TBjntEor6jTdDkAETyYMtbWqHnmpVBQ99Q').then(contract => {
         console.group('Contract from node');
             console.log('- Contract Address: TBjntEor6jTdDkAETyYMtbWqHnmpVBQ99Q');
             console.log('- Origin Address:', contract.origin_address);
@@ -163,9 +163,9 @@ const app = async () => {
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    const sendTransaction = await litetokensWeb.transactionBuilder.sendTrx('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10);
+    const sendTransaction = await litetokensWeb.transactionBuilder.sendXlt('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10);
 
-    console.group('Unsigned send TRX transaction');
+    console.group('Unsigned send XLT transaction');
         console.log('- Recipient: TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1');
         console.log('- Transaction:\n' + JSON.stringify(sendTransaction, null, 2), '\n');
     console.groupEnd();
@@ -301,13 +301,13 @@ const app = async () => {
             console.log('- Transaction:\n' + JSON.stringify(transaction, null, 2), '\n');
         console.groupEnd();
 
-        const signedTransaction = await litetokensWeb.trx.sign(transaction);
+        const signedTransaction = await litetokensWeb.xlt.sign(transaction);
 
         console.group('Signed update token transaction');
             console.log('- Transaction:\n' + JSON.stringify(signedTransaction, null, 2), '\n');
         console.groupEnd();
 
-        litetokensWeb.trx.sendRawTransaction(signedTransaction, (err, result) => {
+        litetokensWeb.xlt.sendRawTransaction(signedTransaction, (err, result) => {
             if(err)
                 return console.error(err);
 
@@ -317,16 +317,16 @@ const app = async () => {
         });
     });
 
-    litetokensWeb.trx.sendTransaction('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10, (err, result) => {
+    litetokensWeb.xlt.sendTransaction('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10, (err, result) => {
         if(err)
             return console.error(err);
 
-        console.group('Send TRX transaction');
+        console.group('Send XLT transaction');
             console.log('- Result:\n' + JSON.stringify(result, null, 2), '\n');
         console.groupEnd();
     });
 
-    litetokensWeb.trx.sendToken('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10, 'TestToken_1', (err, result) => {
+    litetokensWeb.xlt.sendToken('TGEJj8eus46QMHPgWQe1FJ2ymBXRm96fn1', 10, 'TestToken_1', (err, result) => {
         if(err)
             return console.error(err);
 
@@ -415,7 +415,7 @@ const app = async () => {
         console.groupEnd();
     }).catch(err => console.error(err));
 
-    const firstTransaction = await litetokensWeb.trx.getTransactionFromBlock(0, 0);
+    const firstTransaction = await litetokensWeb.xlt.getTransactionFromBlock(0, 0);
 
     console.group('First transaction from block 0');
         console.log('- Transaction:\n' + JSON.stringify(firstTransaction, null, 2), '\n');

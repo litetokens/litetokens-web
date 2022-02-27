@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js';
 import EventEmitter from 'eventemitter3';
 
 import TransactionBuilder from 'lib/transactionBuilder';
-import Trx from 'lib/trx';
+import Xlt from 'lib/xlt';
 import Contract from 'lib/contract';
 
 import { keccak256 } from 'js-sha3';
@@ -53,7 +53,7 @@ export default class LitetokensWeb extends EventEmitter {
             this.setPrivateKey(privateKey);
 
         this.transactionBuilder = new TransactionBuilder(this);
-        this.trx = new Trx(this);
+        this.xlt = new Xlt(this);
         this.utils = utils;
 
         this.injectPromise = utils.promiseInjector(this);
@@ -318,13 +318,13 @@ export default class LitetokensWeb extends EventEmitter {
     }
 
     static fromSun(sun) {
-        const trx = LitetokensWeb.toBigNumber(sun).div(1_000_000);
-        return utils.isBigNumber(sun) ? trx : trx.toString(10);
+        const xlt = LitetokensWeb.toBigNumber(sun).div(1_000_000);
+        return utils.isBigNumber(sun) ? xlt : xlt.toString(10);
     }
 
-    static toSun(trx) {
-        const sun = LitetokensWeb.toBigNumber(trx).times(1_000_000);
-        return utils.isBigNumber(trx) ? sun : sun.toString(10);
+    static toSun(xlt) {
+        const sun = LitetokensWeb.toBigNumber(xlt).times(1_000_000);
+        return utils.isBigNumber(xlt) ? sun : sun.toString(10);
     }
 
     static toBigNumber(amount = 0) {

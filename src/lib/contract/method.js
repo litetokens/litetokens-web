@@ -174,7 +174,7 @@ export default class Method {
                 return callback('Unknown error: ' + JSON.stringify(transaction, null, 2));
 
             // If privateKey is false, this won't be signed here. We assume sign functionality will be replaced.
-            const signedTransaction = await this.litetokensWeb.trx.sign(transaction.transaction, privateKey);
+            const signedTransaction = await this.litetokensWeb.xlt.sign(transaction.transaction, privateKey);
 
             if (!signedTransaction.signature) {
                 if (!privateKey)
@@ -183,7 +183,7 @@ export default class Method {
                 return callback('Invalid private key provided');
             }
 
-            const broadcast = await this.litetokensWeb.trx.sendRawTransaction(signedTransaction);
+            const broadcast = await this.litetokensWeb.xlt.sendRawTransaction(signedTransaction);
 
             if (!broadcast.result)
                 return callback('Unknown error: ' + JSON.stringify(broadcast, null, 2));
@@ -199,7 +199,7 @@ export default class Method {
                     });
                 }
 
-                const output = await this.litetokensWeb.trx.getTransactionInfo(signedTransaction.txID);
+                const output = await this.litetokensWeb.xlt.getTransactionInfo(signedTransaction.txID);
 
                 if (!Object.keys(output).length) {
                     return setTimeout(() => {
