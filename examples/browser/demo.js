@@ -187,10 +187,10 @@ const app = async () => {
     //     console.log('- Transaction:\n' + JSON.stringify(purchaseToken, null, 2), '\n');
     // console.groupEnd();
 
-    const freezeBalance = await litetokensWeb.transactionBuilder.freezeBalance('41928c9af0651632157ef27a2cf17ca72c575a4d21', 20000000);
+    const freezeBalance = await litetokensWeb.transactionBuilder.freezeBalance('30928c9af0651632157ef27a2cf17ca72c575a4d21', 20000000);
 
     console.group('Unsigned freeze balance transaction');
-        console.log('- Address: 41928c9af0651632157ef27a2cf17ca72c575a4d21');;
+        console.log('- Address: 30928c9af0651632157ef27a2cf17ca72c575a4d21');;
         console.log('- Transaction:\n' + JSON.stringify(freezeBalance, null, 2), '\n');
     console.groupEnd();
 
