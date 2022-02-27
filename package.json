@@ -1,8 +1,8 @@
 {
-    "name": "tronweb",
+    "name": "litetokensweb",
     "version": "2.1.14",
     "description": "JavaScript SDK that encapsulates the TRON Node HTTP API",
-    "main": "dist/TronWeb.node.js",
+    "main": "dist/LitetokensWeb.node.js",
     "scripts": {
         "prepare": "npm run build",
         "build": "npm run clean && webpack --config webpack.config.js --progress --colors",

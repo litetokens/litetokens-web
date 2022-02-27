@@ -10,10 +10,10 @@ import Contract from 'lib/contract';
 
 import { keccak256 } from 'js-sha3';
 
-export default class TronWeb extends EventEmitter {
+export default class LitetokensWeb extends EventEmitter {
     static providers = providers;
     static BigNumber = BigNumber;
-    
+
     constructor(fullNode, solidityNode, eventServer = false, privateKey = false) {
         super();
 
@@ -29,7 +29,7 @@ export default class TronWeb extends EventEmitter {
         this.setFullNode(fullNode);
         this.setSolidityNode(solidityNode);
         this.setEventServer(eventServer);
-        
+
         this.providers = providers;
         this.BigNumber = BigNumber;
 
@@ -39,14 +39,14 @@ export default class TronWeb extends EventEmitter {
             hex: false,
             base58: false
         };
-        
+
         [
             'sha3', 'toHex', 'toUtf8', 'fromUtf8',
             'toAscii', 'fromAscii', 'toDecimal', 'fromDecimal',
-            'toSun', 'fromSun', 'toBigNumber', 'isAddress', 
+            'toSun', 'fromSun', 'toBigNumber', 'isAddress',
             'createAccount', 'address'
         ].forEach(key => {
-            this[key] = TronWeb[key];
+            this[key] = LitetokensWeb[key];
         });
 
         if(privateKey)
@@ -133,7 +133,7 @@ export default class TronWeb extends EventEmitter {
 
         if(utils.isString(eventServer))
             eventServer = new providers.HttpProvider(eventServer);
-            
+
         if(!this.isValidProvider(eventServer))
             throw new Error('Invalid event server provided');
 
@@ -187,7 +187,7 @@ export default class TronWeb extends EventEmitter {
 
         if(eventName && !contractAddress)
             return callback('Usage of event name filtering requires a contract address');
-        
+
         if(blockNumber && !eventName)
             return callback('Usage of block number filtering requires an event name');
 
@@ -207,10 +207,10 @@ export default class TronWeb extends EventEmitter {
             if(!utils.isArray(data))
                 return callback(data);
 
-            return callback(null, 
+            return callback(null,
                 data.map(event => utils.mapEvent(event))
             );
-        }).catch(err => callback((err.response && err.response.data) || err)); 
+        }).catch(err => callback((err.response && err.response.data) || err));
     }
 
     getEventByTransactionID(transactionID = false, callback = false) {
@@ -227,7 +227,7 @@ export default class TronWeb extends EventEmitter {
             if(!utils.isArray(data))
                 return callback(data);
 
-            return callback(null, 
+            return callback(null,
                 data.map(event => utils.mapEvent(event))
             );
         }).catch(err => callback((err.response && err.response.data) || err));
@@ -269,23 +269,23 @@ export default class TronWeb extends EventEmitter {
 
     static toHex(val) {
         if(utils.isBoolean(val))
-            return TronWeb.fromDecimal(+val);
+            return LitetokensWeb.fromDecimal(+val);
 
         if(utils.isBigNumber(val))
-            return TronWeb.fromDecimal(val);
+            return LitetokensWeb.fromDecimal(val);
 
         if(typeof val === 'object')
-            return TronWeb.fromUtf8(JSON.stringify(val));
+            return LitetokensWeb.fromUtf8(JSON.stringify(val));
 
         if(utils.isString(val)) {
             if (/^(-|)0x/.test(val))
                 return val;
 
             if(!isFinite(val))
-                return TronWeb.fromUtf8(val);
+                return LitetokensWeb.fromUtf8(val);
         }
 
-        return TronWeb.fromDecimal(val);
+        return LitetokensWeb.fromDecimal(val);
     }
 
     static toUtf8(hex) {
@@ -307,23 +307,23 @@ export default class TronWeb extends EventEmitter {
     }
 
     static toDecimal(value) {
-        return TronWeb.toBigNumber(value).toNumber();
+        return LitetokensWeb.toBigNumber(value).toNumber();
     }
 
     static fromDecimal(value) {
-        const number = TronWeb.toBigNumber(value);
+        const number = LitetokensWeb.toBigNumber(value);
         const result = number.toString(16);
 
         return number.isLessThan(0) ? '-0x' + result.substr(1) : '0x' + result;
     }
 
     static fromSun(sun) {
-        const trx = TronWeb.toBigNumber(sun).div(1_000_000);        
+        const trx = LitetokensWeb.toBigNumber(sun).div(1_000_000);
         return utils.isBigNumber(sun) ? trx : trx.toString(10);
     }
 
     static toSun(trx) {
-        const sun = TronWeb.toBigNumber(trx).times(1_000_000);        
+        const sun = LitetokensWeb.toBigNumber(trx).times(1_000_000);
         return utils.isBigNumber(trx) ? sun : sun.toString(10);
     }
 
@@ -343,7 +343,7 @@ export default class TronWeb extends EventEmitter {
 
         // Convert HEX to Base58
         if(address.length === 42) {
-            return TronWeb.isAddress(
+            return LitetokensWeb.isAddress(
                 utils.crypto.getBase58CheckAddress(
                     utils.code.hexStr2byteArray(address)
                 )

@@ -1,8 +1,8 @@
 const chai = require('chai');
-const TronWeb = require('./setup/TronWeb.js');
+const LitetokensWeb = require('./setup/LitetokensWeb.js');
 
 const assert = chai.assert;
-const HttpProvider = TronWeb.providers.HttpProvider;
+const HttpProvider = LitetokensWeb.providers.HttpProvider;
 
 const FULL_NODE_API = 'https://api.shasta.trongrid.io';
 const SOLIDITY_NODE_API = 'https://api.shasta.trongrid.io';
@@ -12,15 +12,15 @@ const ADDRESS_HEX = '41928c9af0651632157ef27a2cf17ca72c575a4d21';
 const ADDRESS_BASE58 = 'TPL66VK2gCXNCD7EJg9pgJRfqcRazjhUZY';
 
 const createInstance = () => {
-    return new TronWeb(FULL_NODE_API, SOLIDITY_NODE_API, EVENT_API, PRIVATE_KEY);
+    return new LitetokensWeb(FULL_NODE_API, SOLIDITY_NODE_API, EVENT_API, PRIVATE_KEY);
 }
 
-describe('TronWeb Instance', function () {
+describe('LitetokensWeb Instance', function () {
 
     describe('#constructor()', function () {
         it('should create a full instance', function () {
             const tronWeb = createInstance();
-            assert.instanceOf(tronWeb, TronWeb);
+            assert.instanceOf(tronWeb, LitetokensWeb);
         });
 
         it('should create an instance without a private key', function () {
@@ -28,7 +28,7 @@ describe('TronWeb Instance', function () {
             const solidityNode = new HttpProvider(SOLIDITY_NODE_API);
             const eventServer = EVENT_API;
 
-            const tronWeb = new TronWeb(
+            const tronWeb = new LitetokensWeb(
                 fullNode,
                 solidityNode,
                 eventServer
@@ -41,7 +41,7 @@ describe('TronWeb Instance', function () {
             const fullNode = new HttpProvider(FULL_NODE_API);
             const solidityNode = new HttpProvider(SOLIDITY_NODE_API);
 
-            const tronWeb = new TronWeb(
+            const tronWeb = new LitetokensWeb(
                 fullNode,
                 solidityNode
             );
@@ -52,7 +52,7 @@ describe('TronWeb Instance', function () {
         it('should reject an invalid full node URL', function () {
             const solidityNode = new HttpProvider(SOLIDITY_NODE_API);
 
-            assert.throws(() => new TronWeb(
+            assert.throws(() => new LitetokensWeb(
                 '$' + FULL_NODE_API,
                 solidityNode
             ), 'Invalid URL provided to HttpProvider');
@@ -61,7 +61,7 @@ describe('TronWeb Instance', function () {
         it('should reject an invalid solidity node URL', function () {
             const fullNode = new HttpProvider(FULL_NODE_API);
 
-            assert.throws(() => new TronWeb(
+            assert.throws(() => new LitetokensWeb(
                 fullNode,
                 '$' + SOLIDITY_NODE_API
             ), 'Invalid URL provided to HttpProvider');
@@ -71,7 +71,7 @@ describe('TronWeb Instance', function () {
             const fullNode = new HttpProvider(FULL_NODE_API);
             const solidityNode = new HttpProvider(SOLIDITY_NODE_API);
 
-            assert.throws(() => new TronWeb(
+            assert.throws(() => new LitetokensWeb(
                 fullNode,
                 solidityNode,
                 '$' + EVENT_API
@@ -143,7 +143,7 @@ describe('TronWeb Instance', function () {
 
     describe('#setPrivateKey()', function () {
         it('should accept a private key', function () {
-            const tronWeb = new TronWeb(FULL_NODE_API, SOLIDITY_NODE_API, EVENT_API);
+            const tronWeb = new LitetokensWeb(FULL_NODE_API, SOLIDITY_NODE_API, EVENT_API);
 
             tronWeb.setPrivateKey(PRIVATE_KEY);
 
@@ -151,7 +151,7 @@ describe('TronWeb Instance', function () {
         });
 
         it('should set the appropriate address for the private key', function () {
-            const tronWeb = new TronWeb(FULL_NODE_API, SOLIDITY_NODE_API, EVENT_API);
+            const tronWeb = new LitetokensWeb(FULL_NODE_API, SOLIDITY_NODE_API, EVENT_API);
 
             tronWeb.setPrivateKey(PRIVATE_KEY);
 
@@ -160,7 +160,7 @@ describe('TronWeb Instance', function () {
         });
 
         it('should reject an invalid private key', function () {
-            const tronWeb = new TronWeb(FULL_NODE_API, SOLIDITY_NODE_API, EVENT_API);
+            const tronWeb = new LitetokensWeb(FULL_NODE_API, SOLIDITY_NODE_API, EVENT_API);
 
             assert.throws(() => tronWeb.setPrivateKey('test'), 'Invalid private key provided');
         });
@@ -378,7 +378,7 @@ describe('TronWeb Instance', function () {
             const input = 'casa';
             const expected = '0xc4388c0eaeca8d8b4f48786df8517bc8ca379e8cf9566af774448e46e816657d';
 
-            assert.equal(TronWeb.sha3(input), expected);
+            assert.equal(LitetokensWeb.sha3(input), expected);
         });
     });
 

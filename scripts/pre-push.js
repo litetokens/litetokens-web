@@ -11,7 +11,7 @@ try {
 }
 
 const isSourceChanged = unpushed.some(logLine => logLine.includes('src/'));
-const isDistTracked = isSourceChanged ? unpushed.some(logLine => logLine.includes('dist/TronWeb.js')) : true;
+const isDistTracked = isSourceChanged ? unpushed.some(logLine => logLine.includes('dist/LitetokensWeb.js')) : true;
 
 if(!isDistTracked) {
     console.log('Please run: yarn build');

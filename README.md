@@ -2,29 +2,29 @@
   <a href="https://discord.gg/GsRgsTD">
     <img src="https://img.shields.io/badge/chat-on%20discord-brightgreen.svg">
   </a>
-  
+
   <a href="https://github.com/tronprotocol/tron-web/issues">
     <img src="https://img.shields.io/github/issues/tronprotocol/tron-web.svg">
   </a>
-  
+
   <a href="https://github.com/tronprotocol/tron-web/pulls">
     <img src="https://img.shields.io/github/issues-pr/tronprotocol/tron-web.svg">
   </a>
-  
-  <a href="https://github.com/tronprotocol/tron-web/graphs/contributors"> 
+
+  <a href="https://github.com/tronprotocol/tron-web/graphs/contributors">
     <img src="https://img.shields.io/github/contributors/tronprotocol/tron-web.svg">
   </a>
-  
+
   <a href="LICENSE">
     <img src="https://img.shields.io/github/license/tronprotocol/tron-web.svg">
   </a>
 </p>
 
-## What is TronWeb?
+## What is LitetokensWeb?
 
 __[Tron Web - Developer Document](https://developers.tron.network/docs/tron-web-intro)__
 
-TronWeb aims to deliver a unified, seamless development experience influenced by Ethereum's [Web3](https://github.com/ethereum/web3.js/) implementation. We have taken the core ideas and expanded upon it to unlock the functionality of TRON's unique feature set along with offering new tools for integrating DApps in the browser, Node.js and IoT devices.
+LitetokensWeb aims to deliver a unified, seamless development experience influenced by Ethereum's [Web3](https://github.com/ethereum/web3.js/) implementation. We have taken the core ideas and expanded upon it to unlock the functionality of TRON's unique feature set along with offering new tools for integrating DApps in the browser, Node.js and IoT devices.
 
 ## Compatibility
 - Version built for Node.js v6 and above
@@ -32,14 +32,14 @@ TronWeb aims to deliver a unified, seamless development experience influenced by
 
 You can access either version specifically from the `dist/` folder.
 
-TronWeb is also compatible with frontend frameworks such as Angular, React and Vue.
+LitetokensWeb is also compatible with frontend frameworks such as Angular, React and Vue.
 
-You can also ship TronWeb in a Chrome extension.
+You can also ship LitetokensWeb in a Chrome extension.
 
 ## Installation
 
 ```
-npm install tronweb
+npm install litetokensweb
 ```
 
 ## Example
@@ -95,14 +95,14 @@ soliditynode.listen(8091);
 
 ## Creating an Instance
 
-First off, in your javascript file, define TronWeb:
+First off, in your javascript file, define LitetokensWeb:
 
 ```js
-const TronWeb = require('tronweb')
+const LitetokensWeb = require('litetokensweb')
 ```
 Specify the API endpoints:
 ```js
-const HttpProvider = TronWeb.providers.HttpProvider;
+const HttpProvider = LitetokensWeb.providers.HttpProvider;
 const fullNode = new HttpProvider('https://api.trongrid.io'); // Full node http endpoint
 const solidityNode = new HttpProvider('https://api.trongrid.io:'); // Solidity node http endpoint
 const eventServer = 'https://api.trongrid.io'; // Contract events http endpoint
@@ -118,7 +118,7 @@ Now, instance a tronWeb object:
 ```js
 const privateKey = 'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0';
 
-const tronWeb = new TronWeb(
+const tronWeb = new LitetokensWeb(
     fullNode,
     solidityNode,
     eventServer,
@@ -127,16 +127,16 @@ const tronWeb = new TronWeb(
 ```
 #### A full example:
 ```js
-const TronWeb = require('tronweb')
+const LitetokensWeb = require('litetokensweb')
 
-const HttpProvider = TronWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
+const HttpProvider = LitetokensWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
 const fullNode = new HttpProvider('https://api.trongrid.io'); // Full node http endpoint
 const solidityNode = new HttpProvider('https://api.trongrid.io'); // Solidity node http endpoint
 const eventServer = 'https://api.trongrid.io/'; // Contract events http endpoint
 
 const privateKey = 'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0';
 
-const tronWeb = new TronWeb(
+const tronWeb = new LitetokensWeb(
     fullNode,
     solidityNode,
     eventServer,
@@ -173,4 +173,4 @@ getBalance();
 ```
 #### Note:
 
-For testing TronWeb API functions, it would be best to setup a private network on your local machine using the <a href="https://developers.tron.network/docs/getting-started-1" target="_blank">TRON Docker Quickstart guide</a>. The Docker guide sets up a Full Node, Solidity Node, and Event Server on your machine. You can then deploy smart contracts on your network and interact with them via TronWeb. If you wish to test TronWeb with other users, it would be best to deploy your contracts/DApps on the Shasta test network and interact from there.  
+For testing LitetokensWeb API functions, it would be best to setup a private network on your local machine using the <a href="https://developers.tron.network/docs/getting-started-1" target="_blank">TRON Docker Quickstart guide</a>. The Docker guide sets up a Full Node, Solidity Node, and Event Server on your machine. You can then deploy smart contracts on your network and interact with them via LitetokensWeb. If you wish to test LitetokensWeb with other users, it would be best to deploy your contracts/DApps on the Shasta test network and interact from there.

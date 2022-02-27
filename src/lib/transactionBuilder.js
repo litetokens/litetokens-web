@@ -1,11 +1,11 @@
-import TronWeb from 'index';
+import LitetokensWeb from 'index';
 import utils from 'utils';
 import * as Ethers from 'ethers';
 
 export default class TransactionBuilder {
     constructor(tronWeb = false) {
-        if(!tronWeb || !tronWeb instanceof TronWeb)
-            throw new Error('Expected instance of TronWeb');
+        if(!tronWeb || !tronWeb instanceof LitetokensWeb)
+            throw new Error('Expected instance of LitetokensWeb');
 
         this.tronWeb = tronWeb;
         this.injectPromise = utils.promiseInjector(this);
@@ -16,7 +16,7 @@ export default class TransactionBuilder {
             callback = from;
             from = this.tronWeb.defaultAddress.hex;
         }
-        
+
         if(!callback)
             return this.injectPromise(this.sendTrx, to, amount, from);
 
@@ -52,7 +52,7 @@ export default class TransactionBuilder {
             callback = from;
             from = this.tronWeb.defaultAddress.hex;
         }
-        
+
         if(!callback)
             return this.injectPromise(this.sendToken, to, amount, tokenID, from);
 
@@ -93,7 +93,7 @@ export default class TransactionBuilder {
             callback = buyer;
             buyer = this.tronWeb.defaultAddress.hex;
         }
-        
+
         if(!callback)
             return this.injectPromise(this.purchaseToken, issuerAddress, tokenID, amount, buyer);
 
@@ -210,7 +210,7 @@ export default class TransactionBuilder {
 
         if(!this.tronWeb.isAddress(address))
             return callback('Invalid address provided');
-        
+
         this.tronWeb.fullNode.request('wallet/withdrawbalance', {
             owner_address: this.tronWeb.address.toHex(address)
         }, 'post').then(transaction => {
@@ -236,7 +236,7 @@ export default class TransactionBuilder {
 
         if(!utils.isValidURL(url))
             return callback('Invalid url provided');
-        
+
         this.tronWeb.fullNode.request('wallet/createwitness', {
             owner_address: this.tronWeb.address.toHex(address),
             url: this.tronWeb.fromUtf8(url)
@@ -318,7 +318,7 @@ export default class TransactionBuilder {
             parameters = [],
             name = "",
         } = options;
-        
+
 
         if(abi && utils.isString(abi)) {
             try {
@@ -386,7 +386,7 @@ export default class TransactionBuilder {
 
                 if(type == 'address')
                     value = this.tronWeb.address.toHex(value).replace(/^(41)/, '0x');
-                    
+
                 types.push(type);
                 values.push(value);
             }
@@ -417,12 +417,12 @@ export default class TransactionBuilder {
     }
 
     triggerSmartContract(
-        contractAddress, 
+        contractAddress,
         functionSelector,
         feeLimit = 1_000_000_000,
         callValue = 0,
-        parameters = [], 
-        issuerAddress = this.tronWeb.defaultAddress.hex, 
+        parameters = [],
+        issuerAddress = this.tronWeb.defaultAddress.hex,
         callback = false
     ) {
         if(utils.isFunction(issuerAddress)) {
@@ -447,11 +447,11 @@ export default class TransactionBuilder {
 
         if(!callback) {
             return this.injectPromise(
-                this.triggerSmartContract, 
-                contractAddress, 
-                functionSelector, 
+                this.triggerSmartContract,
+                contractAddress,
+                functionSelector,
                 feeLimit,
-                callValue, 
+                callValue,
                 parameters,
                 issuerAddress
             );
@@ -490,7 +490,7 @@ export default class TransactionBuilder {
 
                 if(type == 'address')
                     value = this.tronWeb.address.toHex(value).replace(/^(41)/, '0x');
-                    
+
                 types.push(type);
                 values.push(value);
             }
@@ -544,7 +544,7 @@ export default class TransactionBuilder {
             trxRatio = 1, // How much TRX will `tokenRatio` cost?
             tokenRatio = 1, // How many tokens will `trxRatio` afford?
             saleStart = Date.now(),
-            saleEnd = false,            
+            saleEnd = false,
             freeBandwidth = 0, // The creator's "donated" bandwidth for use by token holders
             freeBandwidthLimit = 0, // Out of `totalFreeBandwidth`, the amount each token holder get
             frozenAmount = 0,
@@ -770,7 +770,7 @@ export default class TransactionBuilder {
             callback = issuerAddress;
             issuerAddress = this.tronWeb.defaultAddress.hex;
         }
-        
+
         if(!callback)
             return this.injectPromise(this.deleteProposal, proposalID, issuerAddress);
 
@@ -839,7 +839,7 @@ export default class TransactionBuilder {
 
     /**
      * Create an exchange between a token and TRX.
-     * Token Name should be a CASE SENSITIVE string. 
+     * Token Name should be a CASE SENSITIVE string.
      * PLEASE VERIFY THIS ON TRONSCAN.
      */
     createTRXExchange(tokenName, tokenBalance, trxBalance, ownerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
@@ -875,7 +875,7 @@ export default class TransactionBuilder {
     /**
      * Create an exchange between a token and another token.
      * DO NOT USE THIS FOR TRX.
-     * Token Names should be a CASE SENSITIVE string. 
+     * Token Names should be a CASE SENSITIVE string.
      * PLEASE VERIFY THIS ON TRONSCAN.
      */
     createTokenExchange(firstTokenName, firstTokenBalance, secondTokenName, secondTokenBalance, ownerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
@@ -1006,11 +1006,11 @@ export default class TransactionBuilder {
      * Expected value is a validation and used to cap the total amt of token 2 spent.
      * Use "_" for the constant value for TRX.
      */
-    tradeExchangeTokens(exchangeID = false, 
-        tokenName = false, 
-        tokenAmountSold = 0, 
-        tokenAmountExpected = 0, 
-        ownerAddress = this.tronWeb.defaultAddress.hex, 
+    tradeExchangeTokens(exchangeID = false,
+        tokenName = false,
+        tokenAmountSold = 0,
+        tokenAmountExpected = 0,
+        ownerAddress = this.tronWeb.defaultAddress.hex,
         callback = false) {
         if(utils.isFunction(ownerAddress)) {
             callback = ownerAddress;

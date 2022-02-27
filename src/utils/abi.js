@@ -1,5 +1,5 @@
 import * as Ethers from 'ethers';
-import TronWeb from 'index';
+import LitetokensWeb from 'index';
 
 const abiCoder = new Ethers.utils.AbiCoder();
 
@@ -34,7 +34,7 @@ export function encodeParams(types, values) {
 
     for (let i =0;i<types.length;i++) {
         if (types[i] === 'address') {
-            values[i] =  TronWeb.address.toHex(values[i]).replace(/^41/, '0x');
+            values[i] =  LitetokensWeb.address.toHex(values[i]).replace(/^41/, '0x');
         }
     }
 

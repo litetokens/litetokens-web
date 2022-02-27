@@ -1,11 +1,11 @@
-import TronWeb from 'index';
+import LitetokensWeb from 'index';
 import utils from 'utils';
 import Method from './method';
 
 export default class Contract {
     constructor(tronWeb = false, abi = [], address = false) {
-        if(!tronWeb || !tronWeb instanceof TronWeb)
-            throw new Error('Expected instance of TronWeb');
+        if(!tronWeb || !tronWeb instanceof LitetokensWeb)
+            throw new Error('Expected instance of LitetokensWeb');
 
         this.tronWeb = tronWeb;
         this.injectPromise = utils.promiseInjector(this);

@@ -59,7 +59,7 @@ module.exports = [
         ...baseConfig,
         output: {
             path: path.resolve(__dirname, 'dist'),
-            filename: 'TronWeb.node.js',
+            filename: 'LitetokensWeb.node.js',
             libraryTarget: 'commonjs2',
             libraryExport: 'default'
         },
@@ -92,8 +92,8 @@ module.exports = [
         ...baseConfig,
         output: {
             path: path.resolve(__dirname, 'dist'),
-            filename: 'TronWeb.js',
-            library: 'TronWeb',
+            filename: 'LitetokensWeb.js',
+            library: 'LitetokensWeb',
             libraryTarget: 'umd',
             libraryExport: 'default',
             umdNamedDefine: true
