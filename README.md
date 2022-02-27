@@ -114,11 +114,11 @@ const fullNode = 'https://api.trongrid.io';
 const solidityNode = 'https://api.trongrid.io';
 const eventServer = 'https://api.trongrid.io/';
 ```
-Now, instance a tronWeb object:
+Now, instance a litetokensWeb object:
 ```js
 const privateKey = 'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0';
 
-const tronWeb = new LitetokensWeb(
+const litetokensWeb = new LitetokensWeb(
     fullNode,
     solidityNode,
     eventServer,
@@ -136,7 +136,7 @@ const eventServer = 'https://api.trongrid.io/'; // Contract events http endpoint
 
 const privateKey = 'da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0';
 
-const tronWeb = new LitetokensWeb(
+const litetokensWeb = new LitetokensWeb(
     fullNode,
     solidityNode,
     eventServer,
@@ -151,16 +151,16 @@ async function getBalance() {
     // The majority of the function calls are asynchronus,
     // meaning that they cannot return the result instantly.
     // These methods therefore return a promise, which you can await.
-    const balance = await tronWeb.trx.getBalance(address);
+    const balance = await litetokensWeb.trx.getBalance(address);
     console.log({balance});
 
     // You can also bind a `then` and `catch` method.
-    tronWeb.trx.getBalance(address).then(balance => {
+    litetokensWeb.trx.getBalance(address).then(balance => {
         console.log({balance});
     }).catch(err => console.error(err));
 
     // If you'd like to use a similar API to Web3, provide a callback function.
-    tronWeb.trx.getBalance(address, (err, balance) => {
+    litetokensWeb.trx.getBalance(address, (err, balance) => {
         if (err)
             return console.error(err);
 

@@ -3,39 +3,39 @@ import utils from 'utils';
 import * as Ethers from 'ethers';
 
 export default class TransactionBuilder {
-    constructor(tronWeb = false) {
-        if(!tronWeb || !tronWeb instanceof LitetokensWeb)
+    constructor(litetokensWeb = false) {
+        if(!litetokensWeb || !litetokensWeb instanceof LitetokensWeb)
             throw new Error('Expected instance of LitetokensWeb');
 
-        this.tronWeb = tronWeb;
+        this.litetokensWeb = litetokensWeb;
         this.injectPromise = utils.promiseInjector(this);
     }
 
-    sendTrx(to = false, amount = 0, from = this.tronWeb.defaultAddress.hex, callback = false) {
+    sendTrx(to = false, amount = 0, from = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(from)) {
             callback = from;
-            from = this.tronWeb.defaultAddress.hex;
+            from = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.sendTrx, to, amount, from);
 
-        if(!this.tronWeb.isAddress(to))
+        if(!this.litetokensWeb.isAddress(to))
             return callback('Invalid recipient address provided');
 
         if(!utils.isInteger(amount) || amount <= 0)
             return callback('Invalid amount provided');
 
-        if(!this.tronWeb.isAddress(from))
+        if(!this.litetokensWeb.isAddress(from))
             return callback('Invalid origin address provided');
 
-        to = this.tronWeb.address.toHex(to);
-        from = this.tronWeb.address.toHex(from);
+        to = this.litetokensWeb.address.toHex(to);
+        from = this.litetokensWeb.address.toHex(from);
 
         if(to === from)
             return callback('Cannot transfer TRX to the same account');
 
-        this.tronWeb.fullNode.request('wallet/createtransaction', {
+        this.litetokensWeb.fullNode.request('wallet/createtransaction', {
             to_address: to,
             owner_address: from,
             amount: parseInt(amount)
@@ -47,16 +47,16 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    sendToken(to = false, amount = 0, tokenID = false, from = this.tronWeb.defaultAddress.hex, callback = false) {
+    sendToken(to = false, amount = 0, tokenID = false, from = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(from)) {
             callback = from;
-            from = this.tronWeb.defaultAddress.hex;
+            from = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.sendToken, to, amount, tokenID, from);
 
-        if(!this.tronWeb.isAddress(to))
+        if(!this.litetokensWeb.isAddress(to))
             return callback('Invalid recipient address provided');
 
         if(!utils.isInteger(amount) || amount <= 0)
@@ -65,17 +65,17 @@ export default class TransactionBuilder {
         if(!utils.isString(tokenID) || !tokenID.length)
             return callback('Invalid token ID provided');
 
-        if(!this.tronWeb.isAddress(from))
+        if(!this.litetokensWeb.isAddress(from))
             return callback('Invalid origin address provided');
 
-        to = this.tronWeb.address.toHex(to);
-        tokenID = this.tronWeb.fromUtf8(tokenID);
-        from = this.tronWeb.address.toHex(from);
+        to = this.litetokensWeb.address.toHex(to);
+        tokenID = this.litetokensWeb.fromUtf8(tokenID);
+        from = this.litetokensWeb.address.toHex(from);
 
         if(to === from)
             return callback('Cannot transfer tokens to the same account');
 
-        this.tronWeb.fullNode.request('wallet/transferasset', {
+        this.litetokensWeb.fullNode.request('wallet/transferasset', {
             to_address: to,
             owner_address: from,
             asset_name: tokenID,
@@ -88,16 +88,16 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    purchaseToken(issuerAddress = false, tokenID = false, amount = 0, buyer = this.tronWeb.defaultAddress.hex, callback = false) {
+    purchaseToken(issuerAddress = false, tokenID = false, amount = 0, buyer = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(buyer)) {
             callback = buyer;
-            buyer = this.tronWeb.defaultAddress.hex;
+            buyer = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.purchaseToken, issuerAddress, tokenID, amount, buyer);
 
-        if(!this.tronWeb.isAddress(issuerAddress))
+        if(!this.litetokensWeb.isAddress(issuerAddress))
             return callback('Invalid issuer address provided');
 
         if(!utils.isString(tokenID) || !tokenID.length)
@@ -106,13 +106,13 @@ export default class TransactionBuilder {
         if(!utils.isInteger(amount) || amount <= 0)
             return callback('Invalid amount provided');
 
-        if(!this.tronWeb.isAddress(buyer))
+        if(!this.litetokensWeb.isAddress(buyer))
             return callback('Invalid buyer address provided');
 
-        this.tronWeb.fullNode.request('wallet/participateassetissue', {
-            to_address: this.tronWeb.address.toHex(issuerAddress),
-            owner_address: this.tronWeb.address.toHex(buyer),
-            asset_name: this.tronWeb.fromUtf8(tokenID),
+        this.litetokensWeb.fullNode.request('wallet/participateassetissue', {
+            to_address: this.litetokensWeb.address.toHex(issuerAddress),
+            owner_address: this.litetokensWeb.address.toHex(buyer),
+            asset_name: this.litetokensWeb.fromUtf8(tokenID),
             amount: parseInt(amount)
         }, 'post').then(transaction => {
             if(transaction.Error)
@@ -122,11 +122,11 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    freezeBalance(amount = 0, duration = 3, resource = "BANDWIDTH", address = this.tronWeb.defaultAddress.hex, callback = false)
+    freezeBalance(amount = 0, duration = 3, resource = "BANDWIDTH", address = this.litetokensWeb.defaultAddress.hex, callback = false)
     {
         if(utils.isFunction(address)) {
             callback = address;
-            address = this.tronWeb.defaultAddress.hex;
+            address = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(utils.isFunction(duration)) {
@@ -151,11 +151,11 @@ export default class TransactionBuilder {
         if(!utils.isInteger(duration) || duration < 3)
             return callback('Invalid duration provided, minimum of 3 days');
 
-        if(!this.tronWeb.isAddress(address))
+        if(!this.litetokensWeb.isAddress(address))
             return callback('Invalid address provided');
 
-        this.tronWeb.fullNode.request('wallet/freezebalance', {
-            owner_address: this.tronWeb.address.toHex(address),
+        this.litetokensWeb.fullNode.request('wallet/freezebalance', {
+            owner_address: this.litetokensWeb.address.toHex(address),
             frozen_balance: parseInt(amount),
             frozen_duration: parseInt(duration),
             resource: resource
@@ -167,11 +167,11 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    unfreezeBalance(resource = "BANDWIDTH", address = this.tronWeb.defaultAddress.hex, callback = false)
+    unfreezeBalance(resource = "BANDWIDTH", address = this.litetokensWeb.defaultAddress.hex, callback = false)
     {
         if(utils.isFunction(address)) {
             callback = address;
-            address = this.tronWeb.defaultAddress.hex;
+            address = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(utils.isFunction(resource)) {
@@ -185,11 +185,11 @@ export default class TransactionBuilder {
         if(![ 'BANDWIDTH', 'ENERGY' ].includes(resource))
             return callback('Invalid resource provided: Expected "BANDWIDTH" or "ENERGY"');
 
-        if(!this.tronWeb.isAddress(address))
+        if(!this.litetokensWeb.isAddress(address))
             return callback('Invalid address provided');
 
-        this.tronWeb.fullNode.request('wallet/unfreezebalance', {
-            owner_address: this.tronWeb.address.toHex(address),
+        this.litetokensWeb.fullNode.request('wallet/unfreezebalance', {
+            owner_address: this.litetokensWeb.address.toHex(address),
             resource: resource
         }, 'post').then(transaction => {
             if(transaction.Error)
@@ -199,20 +199,20 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    withdrawBlockRewards(address = this.tronWeb.defaultAddress.hex, callback = false) {
+    withdrawBlockRewards(address = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(address)) {
             callback = address;
-            address = this.tronWeb.defaultAddress.hex;
+            address = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.withdrawBlockRewards, address);
 
-        if(!this.tronWeb.isAddress(address))
+        if(!this.litetokensWeb.isAddress(address))
             return callback('Invalid address provided');
 
-        this.tronWeb.fullNode.request('wallet/withdrawbalance', {
-            owner_address: this.tronWeb.address.toHex(address)
+        this.litetokensWeb.fullNode.request('wallet/withdrawbalance', {
+            owner_address: this.litetokensWeb.address.toHex(address)
         }, 'post').then(transaction => {
             if(transaction.Error)
                 return callback(transaction.Error);
@@ -221,25 +221,25 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    applyForSR(address = this.tronWeb.defaultAddress.hex, url = false, callback = false) {
+    applyForSR(address = this.litetokensWeb.defaultAddress.hex, url = false, callback = false) {
         if(utils.isValidURL(address)) {
             callback = url || false;
             url = address;
-            address = this.tronWeb.defaultAddress.hex;
+            address = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.applyForSR, address, url);
 
-        if(!this.tronWeb.isAddress(address))
+        if(!this.litetokensWeb.isAddress(address))
             return callback('Invalid address provided');
 
         if(!utils.isValidURL(url))
             return callback('Invalid url provided');
 
-        this.tronWeb.fullNode.request('wallet/createwitness', {
-            owner_address: this.tronWeb.address.toHex(address),
-            url: this.tronWeb.fromUtf8(url)
+        this.litetokensWeb.fullNode.request('wallet/createwitness', {
+            owner_address: this.litetokensWeb.address.toHex(address),
+            url: this.litetokensWeb.fromUtf8(url)
         }, 'post').then(transaction => {
             if(transaction.Error)
                 return callback(transaction.Error);
@@ -248,10 +248,10 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    vote(votes = {}, voterAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    vote(votes = {}, voterAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(voterAddress)) {
             callback = voterAddress;
-            voterAddress = this.tronWeb.defaultAddress.hex;
+            voterAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
@@ -260,7 +260,7 @@ export default class TransactionBuilder {
         if(!utils.isObject(votes) || !Object.keys(votes).length)
             return callback('Invalid votes object provided');
 
-        if(!this.tronWeb.isAddress(voterAddress))
+        if(!this.litetokensWeb.isAddress(voterAddress))
             return callback('Invalid voter address provided');
 
         let invalid = false;
@@ -269,7 +269,7 @@ export default class TransactionBuilder {
             if(invalid)
                 return;
 
-            if(!this.tronWeb.isAddress(srAddress)) {
+            if(!this.litetokensWeb.isAddress(srAddress)) {
                 callback('Invalid SR address provided: ' + srAddress);
                 return invalid = true;
             }
@@ -280,7 +280,7 @@ export default class TransactionBuilder {
             }
 
             return {
-                vote_address: this.tronWeb.address.toHex(srAddress),
+                vote_address: this.litetokensWeb.address.toHex(srAddress),
                 vote_count: parseInt(voteCount)
             };
         });
@@ -288,8 +288,8 @@ export default class TransactionBuilder {
         if(invalid)
             return;
 
-        this.tronWeb.fullNode.request('wallet/votewitnessaccount', {
-            owner_address: this.tronWeb.address.toHex(voterAddress),
+        this.litetokensWeb.fullNode.request('wallet/votewitnessaccount', {
+            owner_address: this.litetokensWeb.address.toHex(voterAddress),
             votes
         }, 'post').then(transaction => {
             if(transaction.Error)
@@ -299,10 +299,10 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    createSmartContract(options = {}, issuerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    createSmartContract(options = {}, issuerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(issuerAddress)) {
             callback = issuerAddress;
-            issuerAddress = this.tronWeb.defaultAddress.hex;
+            issuerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
@@ -359,7 +359,7 @@ export default class TransactionBuilder {
         if(!utils.isArray(parameters))
             return callback('Invalid parameters provided');
 
-        if(!this.tronWeb.isAddress(issuerAddress))
+        if(!this.litetokensWeb.isAddress(issuerAddress))
             return callback('Invalid issuer address provided');
 
         var constructorParams = abi.find(
@@ -385,7 +385,7 @@ export default class TransactionBuilder {
                     return callback('Invalid parameter type provided: ' + type);
 
                 if(type == 'address')
-                    value = this.tronWeb.address.toHex(value).replace(/^(41)/, '0x');
+                    value = this.litetokensWeb.address.toHex(value).replace(/^(41)/, '0x');
 
                 types.push(type);
                 values.push(value);
@@ -398,8 +398,8 @@ export default class TransactionBuilder {
             }
         } else parameters = '';
 
-        this.tronWeb.fullNode.request('wallet/deploycontract', {
-            owner_address: this.tronWeb.address.toHex(issuerAddress),
+        this.litetokensWeb.fullNode.request('wallet/deploycontract', {
+            owner_address: this.litetokensWeb.address.toHex(issuerAddress),
             fee_limit: parseInt(feeLimit),
             call_value: parseInt(callValue),
             consume_user_resource_percent: userFeePercentage,
@@ -422,12 +422,12 @@ export default class TransactionBuilder {
         feeLimit = 1_000_000_000,
         callValue = 0,
         parameters = [],
-        issuerAddress = this.tronWeb.defaultAddress.hex,
+        issuerAddress = this.litetokensWeb.defaultAddress.hex,
         callback = false
     ) {
         if(utils.isFunction(issuerAddress)) {
             callback = issuerAddress;
-            issuerAddress = this.tronWeb.defaultAddress.hex;
+            issuerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(utils.isFunction(parameters)) {
@@ -457,7 +457,7 @@ export default class TransactionBuilder {
             );
         }
 
-        if(!this.tronWeb.isAddress(contractAddress))
+        if(!this.litetokensWeb.isAddress(contractAddress))
             return callback('Invalid contract address provided');
 
         if(!utils.isString(functionSelector) || !functionSelector.length)
@@ -472,7 +472,7 @@ export default class TransactionBuilder {
         if(!utils.isArray(parameters))
             return callback('Invalid parameters provided');
 
-        if(!this.tronWeb.isAddress(issuerAddress))
+        if(!this.litetokensWeb.isAddress(issuerAddress))
             return callback('Invalid issuer address provided');
 
         functionSelector = functionSelector.replace('/\s*/g', '');
@@ -489,7 +489,7 @@ export default class TransactionBuilder {
                     return callback('Invalid parameter type provided: ' + type);
 
                 if(type == 'address')
-                    value = this.tronWeb.address.toHex(value).replace(/^(41)/, '0x');
+                    value = this.litetokensWeb.address.toHex(value).replace(/^(41)/, '0x');
 
                 types.push(type);
                 values.push(value);
@@ -502,9 +502,9 @@ export default class TransactionBuilder {
             }
         } else parameters = '';
 
-        this.tronWeb.fullNode.request('wallet/triggersmartcontract', {
-            contract_address: this.tronWeb.address.toHex(contractAddress),
-            owner_address: this.tronWeb.address.toHex(issuerAddress),
+        this.litetokensWeb.fullNode.request('wallet/triggersmartcontract', {
+            contract_address: this.litetokensWeb.address.toHex(contractAddress),
+            owner_address: this.litetokensWeb.address.toHex(issuerAddress),
             function_selector: functionSelector,
             fee_limit: parseInt(feeLimit),
             call_value: parseInt(callValue),
@@ -515,7 +515,7 @@ export default class TransactionBuilder {
 
             if(transaction.result && transaction.result.message) {
                 return callback(
-                    this.tronWeb.toUtf8(transaction.result.message)
+                    this.litetokensWeb.toUtf8(transaction.result.message)
                 );
             }
 
@@ -526,10 +526,10 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    createToken(options = {}, issuerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    createToken(options = {}, issuerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(issuerAddress)) {
             callback = issuerAddress;
-            issuerAddress = this.tronWeb.defaultAddress.hex;
+            issuerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
@@ -590,15 +590,15 @@ export default class TransactionBuilder {
         if(!utils.isInteger(frozenDuration) || frozenDuration < 0 || (frozenDuration && !frozenAmount))
             return callback('Invalid frozen duration provided');
 
-        if(!this.tronWeb.isAddress(issuerAddress))
+        if(!this.litetokensWeb.isAddress(issuerAddress))
             return callback('Invalid issuer address provided');
 
-        this.tronWeb.fullNode.request('wallet/createassetissue', {
-            owner_address: this.tronWeb.address.toHex(issuerAddress),
-            name: this.tronWeb.fromUtf8(name),
-            abbr: this.tronWeb.fromUtf8(abbreviation),
-            description: this.tronWeb.fromUtf8(description),
-            url: this.tronWeb.fromUtf8(url),
+        this.litetokensWeb.fullNode.request('wallet/createassetissue', {
+            owner_address: this.litetokensWeb.address.toHex(issuerAddress),
+            name: this.litetokensWeb.fromUtf8(name),
+            abbr: this.litetokensWeb.fromUtf8(abbreviation),
+            description: this.litetokensWeb.fromUtf8(description),
+            url: this.litetokensWeb.fromUtf8(url),
             total_supply: parseInt(totalSupply),
             trx_num: parseInt(trxRatio),
             num: parseInt(tokenRatio),
@@ -616,7 +616,7 @@ export default class TransactionBuilder {
 
             if(transaction.result && transaction.result.message) {
                 return callback(
-                    this.tronWeb.toUtf8(transaction.result.message)
+                    this.litetokensWeb.toUtf8(transaction.result.message)
                 );
             }
 
@@ -624,11 +624,11 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    updateAccount(accountName = false, address = this.tronWeb.defaultAddress.hex, callback = false)
+    updateAccount(accountName = false, address = this.litetokensWeb.defaultAddress.hex, callback = false)
     {
         if(utils.isFunction(address)) {
             callback = address;
-            address = this.tronWeb.defaultAddress.hex;
+            address = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback) {
@@ -639,13 +639,13 @@ export default class TransactionBuilder {
             return callback('Name must be a string');
         }
 
-        if(!this.tronWeb.isAddress(address)) {
+        if(!this.litetokensWeb.isAddress(address)) {
             return callback('Invalid origin address provided');
         }
 
-        this.tronWeb.fullNode.request('wallet/updateaccount', {
-            account_name: this.tronWeb.fromUtf8(accountName),
-            owner_address: this.tronWeb.address.toHex(address),
+        this.litetokensWeb.fullNode.request('wallet/updateaccount', {
+            account_name: this.litetokensWeb.fromUtf8(accountName),
+            owner_address: this.litetokensWeb.address.toHex(address),
         }, 'post').then(transaction => {
 
             if(transaction.Error)
@@ -655,10 +655,10 @@ export default class TransactionBuilder {
         }).catch(err => callback(err));
     }
 
-    updateToken(options = {}, issuerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    updateToken(options = {}, issuerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(issuerAddress)) {
             callback = issuerAddress;
-            issuerAddress = this.tronWeb.defaultAddress.hex;
+            issuerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
@@ -677,13 +677,13 @@ export default class TransactionBuilder {
         if(!utils.isInteger(freeBandwidthLimit) || freeBandwidthLimit < 0 || (freeBandwidth && !freeBandwidthLimit))
             return callback('Invalid free bandwidth limit provided');
 
-        if(!this.tronWeb.isAddress(issuerAddress))
+        if(!this.litetokensWeb.isAddress(issuerAddress))
             return callback('Invalid issuer address provided');
 
-        this.tronWeb.fullNode.request('wallet/updateasset', {
-            owner_address: this.tronWeb.address.toHex(issuerAddress),
-            description: this.tronWeb.fromUtf8(description),
-            url: this.tronWeb.fromUtf8(url),
+        this.litetokensWeb.fullNode.request('wallet/updateasset', {
+            owner_address: this.litetokensWeb.address.toHex(issuerAddress),
+            description: this.litetokensWeb.fromUtf8(description),
+            url: this.litetokensWeb.fromUtf8(url),
             new_limit: parseInt(freeBandwidth),
             new_public_limit: parseInt(freeBandwidthLimit)
         }, 'post').then(transaction => {
@@ -692,7 +692,7 @@ export default class TransactionBuilder {
 
             if(transaction.result && transaction.result.message) {
                 return callback(
-                    this.tronWeb.toUtf8(transaction.result.message)
+                    this.litetokensWeb.toUtf8(transaction.result.message)
                 );
             }
 
@@ -720,10 +720,10 @@ export default class TransactionBuilder {
      * Creates a proposal to modify the network.
      * Can only be created by a current Super Representative.
      */
-    createProposal(parameters = false, issuerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    createProposal(parameters = false, issuerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(issuerAddress)) {
             callback = issuerAddress;
-            issuerAddress = this.tronWeb.defaultAddress.hex;
+            issuerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!parameters)
@@ -732,7 +732,7 @@ export default class TransactionBuilder {
         if(!callback)
             return this.injectPromise(this.createProposal, parameters, issuerAddress);
 
-        if(!this.tronWeb.isAddress(issuerAddress))
+        if(!this.litetokensWeb.isAddress(issuerAddress))
             return callback('Invalid issuerAddress provided');
 
         if (!utils.isArray(parameters)) {
@@ -744,8 +744,8 @@ export default class TransactionBuilder {
                 return callback('Invalid parameters provided');
         }
 
-        this.tronWeb.fullNode.request('wallet/proposalcreate', {
-            owner_address: this.tronWeb.address.toHex(issuerAddress),
+        this.litetokensWeb.fullNode.request('wallet/proposalcreate', {
+            owner_address: this.litetokensWeb.address.toHex(issuerAddress),
             parameters: parameters
         }, 'post').then(transaction => {
             if(transaction.Error)
@@ -753,7 +753,7 @@ export default class TransactionBuilder {
 
             if(transaction.result && transaction.result.message) {
                 return callback(
-                    this.tronWeb.toUtf8(transaction.result.message)
+                    this.litetokensWeb.toUtf8(transaction.result.message)
                 );
             }
 
@@ -765,23 +765,23 @@ export default class TransactionBuilder {
      * Deletes a network modification proposal that the owner issued.
      * Only current Super Representative can vote on a proposal.
      */
-    deleteProposal(proposalID = false, issuerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    deleteProposal(proposalID = false, issuerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(issuerAddress)) {
             callback = issuerAddress;
-            issuerAddress = this.tronWeb.defaultAddress.hex;
+            issuerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.deleteProposal, proposalID, issuerAddress);
 
-        if(!this.tronWeb.isAddress(issuerAddress))
+        if(!this.litetokensWeb.isAddress(issuerAddress))
             return callback('Invalid issuerAddress provided');
 
         if(!utils.isInteger(proposalID) || proposalID < 0)
             return callback('Invalid proposalID provided');
 
-        this.tronWeb.fullNode.request('wallet/proposaldelete', {
-            owner_address: this.tronWeb.address.toHex(issuerAddress),
+        this.litetokensWeb.fullNode.request('wallet/proposaldelete', {
+            owner_address: this.litetokensWeb.address.toHex(issuerAddress),
             proposal_id: parseInt(proposalID)
         }, 'post').then(transaction => {
             if(transaction.Error)
@@ -789,7 +789,7 @@ export default class TransactionBuilder {
 
             if(transaction.result && transaction.result.message) {
                 return callback(
-                    this.tronWeb.toUtf8(transaction.result.message)
+                    this.litetokensWeb.toUtf8(transaction.result.message)
                 );
             }
 
@@ -801,16 +801,16 @@ export default class TransactionBuilder {
      * Adds a vote to an issued network modification proposal.
      * Only current Super Representative can vote on a proposal.
      */
-    voteProposal(proposalID = false, isApproval = false, voterAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    voteProposal(proposalID = false, isApproval = false, voterAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(voterAddress)) {
             callback = voterAddress;
-            voterAddress = this.tronWeb.defaultAddress.hex;
+            voterAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.voteProposal, proposalID, isApproval, voterAddress);
 
-        if(!this.tronWeb.isAddress(voterAddress))
+        if(!this.litetokensWeb.isAddress(voterAddress))
             return callback('Invalid voterAddress address provided');
 
         if(!utils.isInteger(proposalID) || proposalID < 0)
@@ -819,8 +819,8 @@ export default class TransactionBuilder {
         if(!utils.isBoolean(isApproval))
             return callback('Invalid hasApproval provided');
 
-        this.tronWeb.fullNode.request('wallet/proposalapprove', {
-            owner_address: this.tronWeb.address.toHex(voterAddress),
+        this.litetokensWeb.fullNode.request('wallet/proposalapprove', {
+            owner_address: this.litetokensWeb.address.toHex(voterAddress),
             proposal_id: parseInt(proposalID),
             is_add_approval: isApproval
         }, 'post').then(transaction => {
@@ -829,7 +829,7 @@ export default class TransactionBuilder {
 
             if(transaction.result && transaction.result.message) {
                 return callback(
-                    this.tronWeb.toUtf8(transaction.result.message)
+                    this.litetokensWeb.toUtf8(transaction.result.message)
                 );
             }
 
@@ -842,16 +842,16 @@ export default class TransactionBuilder {
      * Token Name should be a CASE SENSITIVE string.
      * PLEASE VERIFY THIS ON TRONSCAN.
      */
-    createTRXExchange(tokenName, tokenBalance, trxBalance, ownerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    createTRXExchange(tokenName, tokenBalance, trxBalance, ownerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(ownerAddress)) {
             callback = ownerAddress;
-            ownerAddress = this.tronWeb.defaultAddress.hex;
+            ownerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if (!callback)
             return this.injectPromise(this.createTRXExchange, tokenName, tokenBalance, trxBalance, ownerAddress);
 
-        if (!this.tronWeb.isAddress(ownerAddress))
+        if (!this.litetokensWeb.isAddress(ownerAddress))
             return callback('Invalid address provided');
 
         if (!utils.isString(tokenName) || !tokenName.length)
@@ -861,9 +861,9 @@ export default class TransactionBuilder {
             || !utils.isInteger(trxBalance) || trxBalance <= 0)
             return callback('Invalid amount provided');
 
-        this.tronWeb.fullNode.request('wallet/exchangecreate', {
-            owner_address: this.tronWeb.address.toHex(ownerAddress),
-            first_token_id: this.tronWeb.fromUtf8(tokenName),
+        this.litetokensWeb.fullNode.request('wallet/exchangecreate', {
+            owner_address: this.litetokensWeb.address.toHex(ownerAddress),
+            first_token_id: this.litetokensWeb.fromUtf8(tokenName),
             first_token_balance: tokenBalance,
             second_token_id: '5f', // Constant for TRX.
             second_token_balance: trxBalance
@@ -878,16 +878,16 @@ export default class TransactionBuilder {
      * Token Names should be a CASE SENSITIVE string.
      * PLEASE VERIFY THIS ON TRONSCAN.
      */
-    createTokenExchange(firstTokenName, firstTokenBalance, secondTokenName, secondTokenBalance, ownerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    createTokenExchange(firstTokenName, firstTokenBalance, secondTokenName, secondTokenBalance, ownerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(ownerAddress)) {
             callback = ownerAddress;
-            ownerAddress = this.tronWeb.defaultAddress.hex;
+            ownerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if (!callback)
             return this.injectPromise(this.createTRXExchange, firstTokenName, firstTokenBalance, secondTokenName, secondTokenBalance, ownerAddress);
 
-        if (!this.tronWeb.isAddress(ownerAddress))
+        if (!this.litetokensWeb.isAddress(ownerAddress))
             return callback('Invalid address provided');
 
         if (!utils.isString(firstTokenName) || !firstTokenName.length)
@@ -900,11 +900,11 @@ export default class TransactionBuilder {
             || !utils.isInteger(secondTokenBalance) || secondTokenBalance <= 0)
             return callback('Invalid amount provided');
 
-        this.tronWeb.fullNode.request('wallet/exchangecreate', {
-            owner_address: this.tronWeb.address.toHex(ownerAddress),
-            first_token_id: this.tronWeb.fromUtf8(firstTokenName),
+        this.litetokensWeb.fullNode.request('wallet/exchangecreate', {
+            owner_address: this.litetokensWeb.address.toHex(ownerAddress),
+            first_token_id: this.litetokensWeb.fromUtf8(firstTokenName),
             first_token_balance: firstTokenBalance,
-            second_token_id: this.tronWeb.fromUtf8(secondTokenName),
+            second_token_id: this.litetokensWeb.fromUtf8(secondTokenName),
             second_token_balance: secondTokenBalance
         }, 'post').then(resources => {
             callback(null, resources);
@@ -916,16 +916,16 @@ export default class TransactionBuilder {
      * Will add both tokens at market rate.
      * Use "_" for the constant value for TRX.
      */
-    injectExchangeTokens(exchangeID = false, tokenName = false, tokenAmount = 0, ownerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    injectExchangeTokens(exchangeID = false, tokenName = false, tokenAmount = 0, ownerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(ownerAddress)) {
             callback = ownerAddress;
-            ownerAddress = this.tronWeb.defaultAddress.hex;
+            ownerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.injectExchangeTokens, exchangeID, tokenName, tokenAmount, ownerAddress);
 
-        if(!this.tronWeb.isAddress(ownerAddress))
+        if(!this.litetokensWeb.isAddress(ownerAddress))
             return callback('Invalid ownerAddress provided');
 
         if(!utils.isInteger(exchangeID) || exchangeID < 0)
@@ -937,10 +937,10 @@ export default class TransactionBuilder {
         if(!utils.isInteger(tokenAmount) || tokenAmount < 1)
             return callback('Invalid tokenAmount provided');
 
-        this.tronWeb.fullNode.request('wallet/exchangeinject', {
-            owner_address: this.tronWeb.address.toHex(ownerAddress),
+        this.litetokensWeb.fullNode.request('wallet/exchangeinject', {
+            owner_address: this.litetokensWeb.address.toHex(ownerAddress),
             exchange_id: parseInt(exchangeID),
-            token_id: this.tronWeb.fromUtf8(tokenName),
+            token_id: this.litetokensWeb.fromUtf8(tokenName),
             quant:parseInt(tokenAmount)
         }, 'post').then(transaction => {
             if(transaction.Error)
@@ -948,7 +948,7 @@ export default class TransactionBuilder {
 
             if(transaction.result && transaction.result.message) {
                 return callback(
-                    this.tronWeb.toUtf8(transaction.result.message)
+                    this.litetokensWeb.toUtf8(transaction.result.message)
                 );
             }
 
@@ -961,16 +961,16 @@ export default class TransactionBuilder {
      * Will withdraw at market rate both tokens.
      * Use "_" for the constant value for TRX.
      */
-    withdrawExchangeTokens(exchangeID = false, tokenName = false, tokenAmount = 0, ownerAddress = this.tronWeb.defaultAddress.hex, callback = false) {
+    withdrawExchangeTokens(exchangeID = false, tokenName = false, tokenAmount = 0, ownerAddress = this.litetokensWeb.defaultAddress.hex, callback = false) {
         if(utils.isFunction(ownerAddress)) {
             callback = ownerAddress;
-            ownerAddress = this.tronWeb.defaultAddress.hex;
+            ownerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.withdrawExchangeTokens, exchangeID, tokenName, tokenAmount, ownerAddress);
 
-        if(!this.tronWeb.isAddress(ownerAddress))
+        if(!this.litetokensWeb.isAddress(ownerAddress))
             return callback('Invalid ownerAddress provided');
 
         if(!utils.isInteger(exchangeID) || exchangeID < 0)
@@ -982,10 +982,10 @@ export default class TransactionBuilder {
         if(!utils.isInteger(tokenAmount) || tokenAmount < 1)
             return callback('Invalid tokenAmount provided');
 
-        this.tronWeb.fullNode.request('wallet/exchangewithdraw', {
-            owner_address: this.tronWeb.address.toHex(ownerAddress),
+        this.litetokensWeb.fullNode.request('wallet/exchangewithdraw', {
+            owner_address: this.litetokensWeb.address.toHex(ownerAddress),
             exchange_id: parseInt(exchangeID),
-            token_id: this.tronWeb.fromUtf8(tokenName),
+            token_id: this.litetokensWeb.fromUtf8(tokenName),
             quant:parseInt(tokenAmount)
         }, 'post').then(transaction => {
             if(transaction.Error)
@@ -993,7 +993,7 @@ export default class TransactionBuilder {
 
             if(transaction.result && transaction.result.message) {
                 return callback(
-                    this.tronWeb.toUtf8(transaction.result.message)
+                    this.litetokensWeb.toUtf8(transaction.result.message)
                 );
             }
 
@@ -1010,17 +1010,17 @@ export default class TransactionBuilder {
         tokenName = false,
         tokenAmountSold = 0,
         tokenAmountExpected = 0,
-        ownerAddress = this.tronWeb.defaultAddress.hex,
+        ownerAddress = this.litetokensWeb.defaultAddress.hex,
         callback = false) {
         if(utils.isFunction(ownerAddress)) {
             callback = ownerAddress;
-            ownerAddress = this.tronWeb.defaultAddress.hex;
+            ownerAddress = this.litetokensWeb.defaultAddress.hex;
         }
 
         if(!callback)
             return this.injectPromise(this.tradeExchangeTokens, exchangeID, tokenName, tokenAmountSold, tokenAmountExpected, ownerAddress);
 
-        if(!this.tronWeb.isAddress(ownerAddress))
+        if(!this.litetokensWeb.isAddress(ownerAddress))
             return callback('Invalid ownerAddress provided');
 
         if(!utils.isInteger(exchangeID) || exchangeID < 0)
@@ -1035,10 +1035,10 @@ export default class TransactionBuilder {
         if(!utils.isInteger(tokenAmountExpected) || tokenAmountExpected < 1)
             return callback('Invalid tokenAmountExpected provided');
 
-        this.tronWeb.fullNode.request('wallet/exchangetransaction', {
-            owner_address: this.tronWeb.address.toHex(ownerAddress),
+        this.litetokensWeb.fullNode.request('wallet/exchangetransaction', {
+            owner_address: this.litetokensWeb.address.toHex(ownerAddress),
             exchange_id: parseInt(exchangeID),
-            token_id: this.tronWeb.fromAscii(tokenName),
+            token_id: this.litetokensWeb.fromAscii(tokenName),
             quant:parseInt(tokenAmountSold),
             expected:parseInt(tokenAmountExpected)
         }, 'post').then(transaction => {
@@ -1047,7 +1047,7 @@ export default class TransactionBuilder {
 
             if(transaction.result && transaction.result.message) {
                 return callback(
-                    this.tronWeb.toUtf8(transaction.result.message)
+                    this.litetokensWeb.toUtf8(transaction.result.message)
                 );
             }
 
