@@ -103,7 +103,7 @@ const utils = {
             for (var i = 0; i < abi.length; i++) {
                 let obj = abi[i];
                 if (obj.type == 'address' && obj.name in event.result)
-                    event.result[obj.name] = '41' + event.result[obj.name].substr(2).toLowerCase();
+                    event.result[obj.name] = '30' + event.result[obj.name].substr(2).toLowerCase();
             }
         } else if (this.isArray(event.result)) {
             event.result = event.result.reduce((obj, result, index) => {
@@ -113,7 +113,7 @@ const utils = {
                 } = abi[index];
 
                 if(type == 'address')
-                    result = '41' + result.substr(2).toLowerCase();
+                    result = '30' + result.substr(2).toLowerCase();
 
                 obj[name] = result;
 

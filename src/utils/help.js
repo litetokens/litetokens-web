@@ -45,7 +45,7 @@ export function stringUtf8tHex(str) {
 }
 
 export function address2HexString(sHexAddress) {
-    if (sHexAddress.length == 42 && sHexAddress.indexOf('41') == 0)
+    if (sHexAddress.length == 42 && sHexAddress.indexOf('30') == 0)
         return sHexAddress;
 
     return base58ToHexString(sHexAddress)

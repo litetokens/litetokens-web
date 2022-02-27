@@ -556,7 +556,7 @@ export default class Xlt {
             s: '0x' + signature.substring(64, 128)
         });
 
-        const litetokensAddress = '41' + recovered.substr(2);
+        const litetokensAddress = '30' + recovered.substr(2);
         const base58Address = this.litetokensWeb.address.fromHex(litetokensAddress);
 
         if(base58Address == this.litetokensWeb.address.fromHex(address))

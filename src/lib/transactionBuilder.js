@@ -385,7 +385,7 @@ export default class TransactionBuilder {
                     return callback('Invalid parameter type provided: ' + type);
 
                 if(type == 'address')
-                    value = this.litetokensWeb.address.toHex(value).replace(/^(41)/, '0x');
+                    value = this.litetokensWeb.address.toHex(value).replace(/^(30)/, '0x');
 
                 types.push(type);
                 values.push(value);
@@ -489,7 +489,7 @@ export default class TransactionBuilder {
                     return callback('Invalid parameter type provided: ' + type);
 
                 if(type == 'address')
-                    value = this.litetokensWeb.address.toHex(value).replace(/^(41)/, '0x');
+                    value = this.litetokensWeb.address.toHex(value).replace(/^(30)/, '0x');
 
                 types.push(type);
                 values.push(value);

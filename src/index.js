@@ -249,7 +249,7 @@ export default class LitetokensWeb extends EventEmitter {
             },
             toHex(address) {
                 if(utils.isHex(address))
-                    return address.toLowerCase().replace(/^0x/,'41');
+                    return address.toLowerCase().replace(/^0x/,'30');
 
                 return utils.code.byteArray2hexStr(
                     utils.crypto.decodeBase58Address(address)

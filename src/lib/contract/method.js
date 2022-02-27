@@ -47,11 +47,11 @@ export default class Method {
 
         args.forEach((arg, index) => {
             if (types[index] == 'address')
-                args[index] = this.litetokensWeb.address.toHex(arg).replace(/^(41)/, '0x')
+                args[index] = this.litetokensWeb.address.toHex(arg).replace(/^(30)/, '0x')
 
             if (types[index] == 'address[]') {
                 args[index] = args[index].map(address => {
-                    return this.litetokensWeb.address.toHex(address).replace(/^(41)/, '0x')
+                    return this.litetokensWeb.address.toHex(address).replace(/^(30)/, '0x')
                 })
             }
         });
