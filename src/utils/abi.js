@@ -34,7 +34,7 @@ export function encodeParams(types, values) {
 
     for (let i =0;i<types.length;i++) {
         if (types[i] === 'address') {
-            values[i] =  LitetokensWeb.address.toHex(values[i]).replace(/^41/, '0x');
+            values[i] =  LitetokensWeb.address.toHex(values[i]).replace(/^30/, '0x');
         }
     }
 
