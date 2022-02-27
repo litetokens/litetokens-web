@@ -501,7 +501,7 @@ describe('LitetokensWeb Instance', function () {
             const litetokensWeb = createInstance();
             const types = ['string', 'address', 'address'];
             const values = [
-                'Onwer',
+                'Owner',
                 ADDRESS_HEX,
                 ADDRESS_BASE58
             ];
