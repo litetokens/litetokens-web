@@ -210,7 +210,7 @@ describe('LitetokensWeb Instance', function () {
 
             assert.equal(litetokensWeb.defaultPrivateKey, false);
             assert.equal(litetokensWeb.defaultAddress.hex, '30928c9af0651632157ef27a2cf17ca72c575a4d21');
-            assert.equal(litetokensWeb.defaultAddress.base58, 'TPL66VK2gCXNCD7EJg9pgJRfqcRbnn4zcp');
+            assert.equal(litetokensWeb.defaultAddress.base58, 'LYaqMeF8c8eUHqjktYVQSAoJ933YthjNA1');
         });
 
         it('should not reset the private key if the address matches', function () {
